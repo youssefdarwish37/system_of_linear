@@ -1,7 +1,6 @@
 import timeit
 import Global
 import math
-from math import sin, cos, tan, log
 
 
 def LU(A):
@@ -26,35 +25,31 @@ def LU(A):
     n = len(U)
 
     # Find both U and L matrices
-    for i in range(0, n):  # for i in [0,1,2,..,n]
+    for i in range(0, n):
         # Find the maximun value in a column in order to change lines
         maxElem = abs(U[i][i])
         maxRow = i
-        for k in range(i + 1, n):  # Interacting over the next line
+        for k in range(i + 1, n):
             if abs(U[k][i]) > maxElem:
-                maxElem = abs(U[k][i])  # Next line on the diagonal
+                maxElem = abs(U[k][i])
                 maxRow = k
 
-        # Swap the rows pivoting the maxRow, i is the current row
-        for k in range(i, n):  # Interacting column by column
+        # Swap the rows pivoting the maxRow
+        for k in range(i, n):
             tmp = U[maxRow][k]
             U[maxRow][k] = U[i][k]
             U[i][k] = tmp
 
         #  Subtract lines
         for k in range(i + 1, n):
-            c = -U[k][i] / float(U[i][i])
-            L[k][i] = -c  # Store the multiplier
+            c = U[k][i] / float(U[i][i])
+            L[k][i] = c  # Store the multiplier
             for j in range(i, n):
-                U[k][j] += c * U[i][j]  # Multiply with the pivot line and subtract
+                U[k][j] -= c * U[i][j]  # Multiply with the pivot line and subtract
 
-        #  Make the rows bellow this one zero in the current column
-        for k in range(i + 1, n):
-            U[k][i] = 0
-    print(U)
     n = len(L)
 
-    # (5) Perform substitutioan Ly=b
+    # substitution Ly=b
 
     y = [0 for i in range(n)]
     for i in range(0, n, 1):
@@ -63,7 +58,7 @@ def LU(A):
             y[i] -= y[k] * L[i][k]
     n = len(U)
 
-    # (6) Perform substitution Ux=y
+    # substitution Ux=y
     # backward substitution
     x = [0 for i in range(n)]
     for i in range(len(U) - 1, -1, -1):
@@ -91,31 +86,28 @@ def LU(A):
 
 def gauss_elimination(A):
     n = len(A) # Give us total of lines
-    # Find both U and L matrices
-    for i in range(0, n):  # for i in [0,1,2,..,n]
+
+    for i in range(0, n):
         # Find the maximun value in a column in order to change lines
         maxElem = abs(A[i][i])
         maxRow = i
-        for k in range(i + 1, n):  # Interacting over the next line
+        for k in range(i + 1, n):
             if abs(A[k][i]) > maxElem:
                 maxElem = abs(A[k][i])  # Next line on the diagonal
                 maxRow = k
 
-        # Swap the rows pivoting the maxRow, i is the current row
-        for k in range(i, n+1):  # Interacting column by column
+        # Swap the rows pivoting the maxRow
+        for k in range(i, n+1):
             tmp = A[maxRow][k]
             A[maxRow][k] = A[i][k]
             A[i][k] = tmp
 
         #  Subtract lines
         for k in range(i + 1, n):
-            c = -A[k][i] / float(A[i][i])
+            c = A[k][i] / float(A[i][i])
             for j in range(i, n+1):
-                A[k][j] += c * A[i][j]  # Multiply with the pivot line and subtract
+                A[k][j] -= c * A[i][j]  # Multiply with the pivot line and subtract
 
-        #  Make the rows bellow this one zero in the current column
-        for k in range(i + 1, n):
-            A[k][i] = 0
     # A=[X|b]
     # b vector
     b = [0 for i in range(n)]
@@ -149,5 +141,5 @@ def gauss_elimination(A):
 if __name__ == '__main__':
     m = [[8, 4, -1, 11], [-2, 3, 1, 4], [2, -1, 6, 7]]
     m2 = [[1, 1, -1, -3], [6, 2, 2, 2], [-3, 4, 1, 1]]
-   # x = LU(m)
-    gauss_elimination(m2)
+    x = LU(m)
+    y = gauss_elimination(m2)
