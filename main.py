@@ -85,7 +85,7 @@ def LU(A):
 
 
 def gauss_elimination(A):
-    n = len(A) # Give us total of lines
+    n = len(A)  # Give us total of lines
 
     for i in range(0, n):
         # Find the maximun value in a column in order to change lines
@@ -97,7 +97,7 @@ def gauss_elimination(A):
                 maxRow = k
 
         # Swap the rows pivoting the maxRow
-        for k in range(i, n+1):
+        for k in range(i, n + 1):
             tmp = A[maxRow][k]
             A[maxRow][k] = A[i][k]
             A[i][k] = tmp
@@ -105,7 +105,7 @@ def gauss_elimination(A):
         #  Subtract lines
         for k in range(i + 1, n):
             c = A[k][i] / float(A[i][i])
-            for j in range(i, n+1):
+            for j in range(i, n + 1):
                 A[k][j] -= c * A[i][j]  # Multiply with the pivot line and subtract
 
     # A=[X|b]
@@ -138,8 +138,28 @@ def gauss_elimination(A):
     return x
 
 
+def gauss_seidel(a, epsilon):
+    x0, y0, z0 = 0, 0, 0
+    # iterations += '%d \t [%.6f \t %.6f\t %.6f]\n' % (0, x1, x2, x3)
+    x1, x2, x3 = 0, 0, 0
+    for i in range(1, 51):
+        x1 = (a[0][3] - a[0][1] * x2 - a[0][2] * x3) / a[0][0]
+        x2 = (a[1][3] - a[1][0] * x1 - a[1][2] * x3) / a[1][1]
+        x3 = (a[2][3] - a[2][0] * x1 - a[2][1] * x2) / a[2][2]
+        e1 = abs((x1 - x0) / x1)
+        e2 = abs((x2 - y0) / x2)
+        e3 = abs((x3 - z0) / x3)
+        x0, y0, z0 = x1, x2, x3
+        if e1 < epsilon and e2 < epsilon and e3 < epsilon:
+            break
+    print(x0, y0, z0)
+    return x0, y0, z0
+
+
 if __name__ == '__main__':
     m = [[8, 4, -1, 11], [-2, 3, 1, 4], [2, -1, 6, 7]]
     m2 = [[1, 1, -1, -3], [6, 2, 2, 2], [-3, 4, 1, 1]]
+    m3 = [[12, 3, -5, 1], [1, 5, 3, 28], [3, 7, 13, 76]]
     x = LU(m)
     y = gauss_elimination(m2)
+    gauss_seidel(m3, 0.7)
