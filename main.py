@@ -5,7 +5,19 @@ import math
 
 def LU(A):
     n = len(A)  # Give us total of lines
+    # Find the maximum value in a column in order to change lines
+    i = 0
+    maxRow = i
 
+    for k in range(i + 1, n):
+        if abs(A[k][i]) > abs(A[maxRow][i]):
+            maxRow = k
+
+    # Swap the rows pivoting the maxRow
+    for k in range(i, n + 1):
+        tmp = A[maxRow][k]
+        A[maxRow][k] = A[i][k]
+        A[i][k] = tmp
     # b vector
     b = [0 for i in range(n)]
     for i in range(0, n):
@@ -26,34 +38,33 @@ def LU(A):
 
     # Find both U and L matrices
     for i in range(0, n):
-        # Find the maximun value in a column in order to change lines
-        maxRow = i
-
-        for k in range(i + 1, n):
-            if abs(U[k][i]) > abs(U[maxRow][i]):
-                maxRow = k
-        # Swap the rows pivoting the maxRow
-        for k in range(i, n):
-            tmp = U[maxRow][k]
-            U[maxRow][k] = U[i][k]
-            U[i][k] = tmp
-
         #  Subtract lines
         for k in range(i + 1, n):
             c = U[k][i] / float(U[i][i])
             L[k][i] = c  # Store the multiplier
             for j in range(i, n):
                 U[k][j] -= c * U[i][j]  # Multiply with the pivot line and subtract
+    # Checking if L*U =A
+    result = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    for i in range(len(L)):
+        # iterate through columns of Y
+        for j in range(len(U[0])):
+            # iterate through rows of Y
+            for k in range(len(U)):
+                result[i][j] += L[i][k] * U[k][j]
 
     n = len(L)
 
     # substitution Ly=b
 
     y = [0 for i in range(n)]
+    print(y)
     for i in range(0, n, 1):
         y[i] = b[i] / float(L[i][i])
+        print(y[i])
         for k in range(0, i, 1):
             y[i] -= y[k] * L[i][k]
+    print(y)
     n = len(U)
 
     # substitution Ux=y
@@ -74,6 +85,9 @@ def LU(A):
     for row in L:
         print(row)
 
+    print('L*U=A:')
+    for r in result:
+        print(r)
     for i in range(len(y)):
         print(f'd{i + 1}={y[i]}')
 
@@ -166,7 +180,7 @@ def gauss_jordan(A):
             for k in range(0, i):
                 d = A[k][i] / float(A[i][i])
 
-                for j in range(k, n+1):
+                for j in range(k, n + 1):
                     A[k][j] -= d * A[i][j]  # Multiply with the pivot line and subtract
 
         #  Subtract lines
@@ -226,7 +240,8 @@ if __name__ == '__main__':
     m2 = [[1, 1, -1, -3], [6, 2, 2, 2], [-3, 4, 1, 1]]
     m3 = [[12, 3, -5, 1], [1, 5, 3, 28], [3, 7, 13, 76]]
     m4 = [[2, 3, 1, -4], [4, 1, 4, 9], [3, 4, 6, 0]]
-    x = LU(m2)
-    y = gauss_elimination(m2)
-    z = gauss_jordan(m2)
-    gauss_seidel(m2, 0.7)
+    m5 = [[2, -6, -1, -38], [-3, -1, 7, -34], [-8, 1, -2, -20]]
+    x = LU(m5)
+    y = gauss_elimination(m5)
+    # z = gauss_jordan(m2)
+    # gauss_seidel(m2, 0.7)
