@@ -25,7 +25,7 @@ def LU(A):
     b = [0 for i in range(n)]
     for i in range(0, n):
         b[i] = A[i][n]
-
+    print(b)
     # Fill L matrix and its diagonal with 1
     L = [[0 for i in range(n)] for i in range(n)]
     for i in range(0, n):
@@ -48,16 +48,16 @@ def LU(A):
             for j in range(i, n):
                 U[k][j] -= c * U[i][j]  # Multiply with the pivot line and subtract
 
-    # Checking if L*U =A
-    result = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
-    for i in range(len(L)):
-        # iterate through columns of Y
-        for j in range(len(U[0])):
-            # iterate through rows of Y
-            for k in range(len(U)):
-                result[i][j] += L[i][k] * U[k][j]
-
-    n = len(L)
+    # # Checking if L*U =A
+    # result = [0 for i in range(n)]
+    # for i in range(len(L)):
+    #     # iterate through columns of Y
+    #     for j in range(len(U[0])):
+    #         # iterate through rows of Y
+    #         for k in range(len(U)):
+    #             result[i][j] += L[i][k] * U[k][j]
+    #
+    # n = len(L)
 
     # substitution Ly=b
 
@@ -88,9 +88,9 @@ def LU(A):
     for row in L:
         print(row)
 
-    print('L*U=A:')
-    for r in result:
-        print(r)
+    # print('L*U=A:')
+    # for r in result:
+    #     print(r)
 
     for i in range(len(y)):
         print(f'd{i + 1}={y[i]}')
@@ -244,7 +244,7 @@ if __name__ == '__main__':
     m2 = [[1, 1, -1, -3], [6, 2, 2, 2], [-3, 4, 1, 1]]
     m3 = [[12, 3, -5, 1], [1, 5, 3, 28], [3, 7, 13, 76]]
     m4 = [[2, 3, 1, -4], [4, 1, 4, 9], [3, 4, 6, 0]]
-    m5 = [[2, -6, -1, -38], [-3, -1, 7, -34], [-8, 1, -2, -20]]
+    m5 = [[1, -2, -2, -3, 5], [3, -9, 0, -9, 6], [-1, 2, 4, 7, 5], [-3, -6, 26, 2, 6]]  # 4*4
     x = LU(m5)
     y = gauss_elimination(m5)
     z = gauss_jordan(m5)
